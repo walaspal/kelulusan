@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Kelulusan Kelas 6</title>
+    <style>
+        /* Desain Tampilan (CSS) */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        /* Tampilan Form Login */
+        input[type="text"] {
+            width: 90%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            text-align: center;
+        }
+        button {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #0b5ed7;
+        }
+        .error-msg {
+            color: #dc3545;
+            margin-top: 15px;
+            font-size: 14px;
+            display: none;
+        }
+
+        /* Tampilan Hasil Kelulusan */
+        #result-section {
+            display: none;
+        }
+        .student-photo {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #198754;
+            margin-bottom: 15px;
+        }
+        .student-name {
+            font-size: 22px;
+            color: #212529;
+            margin: 10px 0 5px 0;
+        }
+        .student-nisn {
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+        .status {
+            font-size: 28px;
+            font-weight: bold;
+            color: #198754;
+            margin-bottom: 25px;
+            padding: 10px;
+            background-color: #d1e7dd;
+            border-radius: 6px;
+        }
+        .btn-back {
+            background-color: #6c757d;
+        }
+        .btn-back:hover {
+            background-color: #5c636a;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="login-section">
+            <h2>Pengumuman Kelulusan<br>Kelas 6</h2>
+            <p>Masukkan NISN untuk melihat hasil</p>
+            <input type="text" id="input-nisn" placeholder="Contoh: 0012345671">
+            <button onclick="cekKelulusan()">Cek Hasil</button>
+            <div id="error-message" class="error-msg">NISN tidak ditemukan. Silakan periksa kembali.</div>
+        </div>
+
+        <div id="result-section">
+            <h2>Hasil Kelulusan</h2>
+            <img id="res-photo" class="student-photo" src="" alt="Foto Siswa">
+            <h3 id="res-name" class="student-name">Nama Siswa</h3>
+            <p id="res-nisn" class="student-nisn">NISN: -</p>
+            <div id="res-status" class="status">LULUS</div>
+            <button class="btn-back" onclick="kembali()">Cari Siswa Lain</button>
+        </div>
+    </div>
+
+    <script>
+        // Data 10 Siswa (Silakan ubah NISN, Nama, dan file foto sesuai kebutuhan)
+        const dataSiswa = [
+            { nisn: "0145760076", nama: "ACHMAD ADAMSYAH", status: "LULUS", foto: "foto/1.jpeg" },
+            { nisn: "0138156054", nama: "EKA SEPTI ASRI NUR LELY", status: "LULUS", foto: "foto/2.jpeg" },
+            { nisn: "0145792306", nama: "KHADIJAH MAYSA ZAHRA", status: "LULUS", foto: "foto/3.jpeg" },
+            { nisn: "0147001507", nama: "MUHAMMAD RAEHAN", status: "LULUS", foto: "foto/4.jpeg" },
+            { nisn: "0143598886", nama: "MUHAMMAD SALFIAN HELMI", status: "LULUS", foto: "foto/5.jpeg" },
+            { nisn: "0149780189", nama: "NORHAYATI", status: "LULUS", foto: "foto/6.jpeg" },
+            { nisn: "0144897492", nama: "NORLAILA HANUM", status: "LULUS", foto: "foto/7.jpeg" },
+            { nisn: "0138561625", nama: "NORMILA", status: "LULUS", foto: "foto/8.jpeg" },
+            { nisn: "3139666025", nama: "RAYSA", status: "LULUS", foto: "foto/9.jpeg" },
+            { nisn: "0133292304", nama: "WARDATUL JANNAH", status: "ULUS", foto: "foto/10.jpeg" } // Contoh jika ada yang tidak lulus
+        ];
+
+        function cekKelulusan() {
+            // Mengambil nilai NISN dari input
+            const inputNisn = document.getElementById('input-nisn').value.trim();
+            const errorMessage = document.getElementById('error-message');
+            const loginSection = document.getElementById('login-section');
+            const resultSection = document.getElementById('result-section');
+
+            // Mencari siswa berdasarkan NISN di dalam dataSiswa
+            const siswa = dataSiswa.find(s => s.nisn === inputNisn);
+
+            if (siswa) {
+                // Jika siswa ditemukan, sembunyikan pesan error dan form login
+                errorMessage.style.display = 'none';
+                loginSection.style.display = 'none';
+                
+                // Tampilkan hasil dan isi datanya
+                resultSection.style.display = 'block';
+                document.getElementById('res-photo').src = siswa.foto;
+                document.getElementById('res-name').innerText = siswa.nama;
+                document.getElementById('res-nisn').innerText = "NISN: " + siswa.nisn;
+                
+                const statusElement = document.getElementById('res-status');
+                statusElement.innerText = siswa.status;
+                
+                // Ubah warna jika tidak lulus
+                if(siswa.status === "TIDAK LULUS") {
+                    statusElement.style.color = "#dc3545"; // Merah
+                    statusElement.style.backgroundColor = "#f8d7da";
+                } else {
+                    statusElement.style.color = "#198754"; // Hijau
+                    statusElement.style.backgroundColor = "#d1e7dd";
+                }
+            } else {
+                // Jika NISN tidak ditemukan, tampilkan pesan error
+                errorMessage.style.display = 'block';
+            }
+        }
+
+        function kembali() {
+            // Mengembalikan tampilan ke form login
+            document.getElementById('input-nisn').value = '';
+            document.getElementById('result-section').style.display = 'none';
+            document.getElementById('login-section').style.display = 'block';
+            document.getElementById('error-message').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
